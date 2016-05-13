@@ -48,8 +48,8 @@
             Getting Started
           </h3>
             <p>This workshop is for developers. You will need your own laptop with administrator access.</p>
-            <h4>Install and configure a local Web Server</h4>
-            <p>We recommend installing the Open Source version of NGINX as is is easy to install and configure on all platforms.</p>
+            <h4>Install and configure your local Web Server</h4>
+            <p>We recommend installing the Open Source version of NGINX as it is easy to install and configure on all platforms.</p>
             <ul>
                 <li>
                     <a href="http://codingexplained.com/operating-systems/mac/installing-nginx-os-x-yosemite">NGINX - OSX Installation Instructions</a>
@@ -59,8 +59,8 @@
                 </li>
             </ul>
             <p>If you prefer you can use Apache, IIS or any other web server you prefer - but whichever you choose be aware you will need to know how to configure it's reverse proxy settings. This is not always straight-forward.</p>
-            <p>Create or select a directory on your laptop to hold all workshop artifacts. Configure your web server so that this directory is the default location.</p>
-            <p>Configure your web server to act as a reverse proxy to direct all HTTP requests to location <code>/V2</code> to <code>http://services.odata.org/V2</code>.</p>
+            <p>Create or select a directory on your laptop to hold all workshop artifacts. Configure your web server so that this directory is it's root directory.</p>
+            <p>You also need to configure your web server to act as a reverse proxy to direct all HTTP requests to location <code>/V2</code> to <code>http://services.odata.org/V2</code>.</p>
             <p>Below is a sample server section of the NGINX.conf file. It shows the webserver configured on port 80, the root directory at <code>/Users/graham/Sites</code>, and the reverse proxy setting for the <code>/V2</code> requests.</p>
             <pre><code>
 server {
@@ -81,10 +81,10 @@ server {
 }
 </code>
 </pre>
-            <p>Test your web server configuration works before moving on.</p>
+            <p>Start your web server and test the configuration works before moving on.</p>
             <h4>Download and Install the OpenUI5 SDK</h4>
             <p>Download the <a href="http://openui5.org/download.html">OpenUI5 SDK</a>. Create a subdirectory in your web server root directory called <code>ui5</code> and place the unpacked OpenUI5 SDK here.</p>
-            <p>Check you can access the OpenUI5 SDK via you browser at <a href="http://localhost/ui5/openui5-sdk-1.36.9">http://localhost/ui5/openui5-sdk-1.36.9</a></p>
+            <p>Check you can access the OpenUI5 SDK with your browser at <a href="http://localhost/ui5/openui5-sdk-1.36.9">http://localhost/ui5/openui5-sdk-1.36.9</a></p>
 
             <h4>Choose Your Editor.</h4>
             <p>If you do not already have a suitable editor installed on your laptop you should install one now.</p>
