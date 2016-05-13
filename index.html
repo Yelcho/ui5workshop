@@ -61,7 +61,7 @@
             <p>If you prefer you can use Apache, IIS or any other web server you prefer - but whichever you choose be aware you will need to know how to configure it's reverse proxy settings. This is not always straight-forward.</p>
             <p>Create or select a directory on your laptop to hold all workshop artifacts. Configure your web server so that this directory is the default location.</p>
             <p>Configure your web server to act as a reverse proxy to direct all HTTP requests to location <code>/V2</code> to <code>http://services.odata.org/V2</code>.</p>
-            <p>Below is a sample server section of the NGIX.conf file. It shows the webserver configured on port 80, the root directory at <code>/Users/graham/Sites</code>, and the reverse proxy setting for the <code>/V2</code> requests.</p>
+            <p>Below is a sample server section of the NGINX.conf file. It shows the webserver configured on port 80, the root directory at <code>/Users/graham/Sites</code>, and the reverse proxy setting for the <code>/V2</code> requests.</p>
             <pre><code>
 server {
     listen       80;
