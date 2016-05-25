@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/ui5/openui5-sdk-1.36.10/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-theme="sap_bluecrystal" data-sap-ui-xx-bindingSyntax="complex" data-sap-ui-libs="sap.m"></script>
+    <meta charset="utf-8">
+    <title>OpenUI5 Simple Demo</title>
+    <script type="text/javascript">
+    var employeeData = {
+        Employees : [
+            {
+                Name: 'Donald Duck',
+                Company: 'Disney',
+                Email: 'donald@disney.com'
+            },
+            {
+                Name: 'Mickey Mouse',
+                Company: 'Disney',
+                Email: 'mickey@disney.com'
+            },
+            {
+                Name: 'Pluto Pup',
+                Company: 'Disney',
+                Email: 'pluto@disney.com'
+            },
+        ]
+    };
+    new sap.m.App({
+            pages: new sap.m.Page({
+                title: 'OpenUI5 Simple Demo',
+                content: new sap.m.IconTabBar({
+                    items: [
+                        new sap.m.IconTabFilter({
+                            text: 'Employees',
+                            icon: 'sap-icon://group',
+                            content: new sap.m.List({
+                                items: {
+                                    path: '/Employees',
+                                    template: new sap.m.StandardListItem({
+                                        title: '{Name}',
+                                        description: '{Company}',
+                                        info: '{Email}'
+                                    })
+                                }
+                            })
+                        })
+                    ]
+                })
+            })
+        })
+        .setModel(new sap.ui.model.json.JSONModel(employeeData))
+        .placeAt('content');
+    </script>
+</head>
+
+<body id="content" class="sapUiBody">
+</body>
+
+</html>

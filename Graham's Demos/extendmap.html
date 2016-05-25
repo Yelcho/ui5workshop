@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html><head>
+<meta name="description" content="OpenUI5: Step 4b - Custom control: GoogleMap" />
+	<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+	<title>GoogleMap Example with Data Binding used</title>
+	
+	<script id='sap-ui-bootstrap' type='text/javascript'
+			src='/ui5/openui5-sdk-1.36.10/resources/sap-ui-core.js'
+			data-sap-ui-theme='sap_goldreflection'
+			data-sap-ui-libs='sap.ui.commons'
+			data-sap-ui-xx-bindingSyntax="complex"></script> 
+	
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	
+	<script>
+		
+		// PART 1: define the new GoogleMap Control type
+		sap.ui.core.Control.extend("my.GoogleMap", { // call the new Control type "my.GoogleMap" and let it inherit from sap.ui.core.Control
+			
+			// the control API:
+			metadata : {
+				properties : {   // setter and getter are created behind the scenes, incl. data binding and type validation
+					latitude: "float",
+					longitude: "float",
+					zoom: {
+						type: "int",
+						defaultValue: 5
+					}
+				}
+			},
+			
+			init: function(){
+				this._html = new sap.ui.core.HTML({content:"<div style='height:100%;width:100%;' id='" + this.getId()+"-map'></div>"});
+			},
+			
+			// the part creating the HTML:
+			renderer : function(oRm, oControl) { // static function, so use the given "oControl" instance instead of "this" in the renderer function
+				oRm.write("<div style='height:300px;width:500px;margin:18px;' "); 
+				oRm.writeControlData(oControl);  // writes the Control ID and enables event handling - important!
+				oRm.write(">");
+				oRm.renderControl(oControl._html);
+				oRm.write("</div>");
+			},
+			
+			// an event handler:
+			onAfterRendering : function() {   
+				if (!this.initialized) { // after the first rendering initialize the map
+					this.initialized = true;
+					var options = {
+						zoom: this.getZoom(), 
+						center: new google.maps.LatLng(this.getLatitude(),this.getLongitude()), 
+						mapTypeId:"roadmap"
+					};
+					this._map = new google.maps.Map(jQuery.sap.domById(this.getId()+"-map"),options);
+					
+					// for two-way binding: update position when user drags map
+					var that = this;
+					google.maps.event.addListener(this._map, 'center_changed', function() {
+						var c = this.getCenter();
+						that.setProperty("longitude", c.lng(), true);
+						that.setProperty("latitude", c.lat(), true);
+					});
+					
+					// same for zoom
+					google.maps.event.addListener(this._map, 'zoom_changed', function() {
+						that.setProperty("zoom", this.getZoom(), true);
+					});
+					
+				} else {
+					// after subsequent rerenderings, the map needs to get the current values set
+					this._map.setCenter(new google.maps.LatLng(this.getLatitude(),this.getLongitude()));
+				}
+				
+			},
+			
+			setZoom: function(zoomValue) {
+				this.setProperty("zoom", zoomValue, true); // no rerendering required
+				
+				if (this.getDomRef()) { // if rendered, directly let the map zoom
+					this._map.setZoom(zoomValue);
+				}
+			}
+		});
+		
+		
+		jQuery.sap.require("sap.ui.model.json.JSONModel");
+		var oModel = new sap.ui.model.json.JSONModel({
+			// 15 Mardi Court Kellyville
+			longitude: 150.98163499999998,
+			latitude: -33.70333490000001,
+			zoom: 18
+		});
+		sap.ui.getCore().setModel(oModel);
+		
+		// PART 2: instantiate Control and place it onto the page
+		var myMap = new my.GoogleMap({
+			longitude:"{/longitude}", 
+			latitude:"{/latitude}",
+			zoom: "{/zoom}"
+		}).placeAt("content");  
+		
+		// PART 3: interact with the map
+		new sap.ui.commons.Button({
+			text: "Get Location",
+			press: function(){
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function(position) {
+						myMap.setLatitude(position.coords.latitude)
+							.setLongitude(position.coords.longitude)
+							.setZoom(4);
+						setTimeout(function(){zoomIn(4,17,500)},500);
+					}, function(){
+						alert("Error while determining position");
+					});
+				}
+			}
+		}).placeAt("content");
+
+		new sap.ui.commons.Button({
+			text: "Get Beachhouse",
+			press: function(){
+				if (navigator.geolocation) {
+					myMap.setLatitude(-30.260083221699393)
+						.setLongitude(153.13728872750858)
+						.setZoom(4);
+					setTimeout(function(){zoomIn(4,17,500)},500);
+				}
+			}
+		}).placeAt("content");
+
+		new sap.ui.commons.Button({
+			text: "Get Dinner",
+			press: function(){
+				if (navigator.geolocation) {
+					myMap.setLatitude(-37.82147793516305)
+						.setLongitude(144.96193882996667)
+						.setZoom(4);
+					setTimeout(function(){zoomIn(4,18,500)},500);
+				}
+			}
+		}).placeAt("content");
+		
+		// PART 4: interact with the map using data binding
+		new sap.ui.commons.Label({text: "Longitude: {/longitude}"}).placeAt("sliders");
+		new sap.ui.commons.Slider({
+			min: -180,
+			max: 180,
+			value: "{/longitude}",
+			width: "100%"
+		}).placeAt("sliders");
+		
+		
+		new sap.ui.commons.Label({text: "Latitude: {/latitude}"}).placeAt("sliders");
+		new sap.ui.commons.Slider({
+			min: -90,
+			max: 90,
+			value: "{/latitude}",
+			width: "100%"
+		}).placeAt("sliders");
+		
+		
+		new sap.ui.commons.Label({text: "Zoom:"}).placeAt("sliders");
+		new sap.ui.commons.Slider({
+			min: 1,
+			max: 18,
+			value: "{/zoom}",
+			smallStepWidth: 1,
+			stepLabels: true,
+			totalUnits: 14,
+			width: "100%"
+		}).placeAt("sliders");
+		
+		function zoomIn(zoomLevelStart,zoomLevelEnd, interval) {
+			myMap.setZoom(zoomLevelStart);
+			if(zoomLevelStart < zoomLevelEnd) {
+				setTimeout(function(){zoomIn(zoomLevelStart+1,zoomLevelEnd,interval)},interval);
+			}
+		}
+	</script>
+	
+	
+	</head>
+	<body class='sapUiBody'>
+		<div id='content'></div>
+		<hr/>
+		<div id='sliders'></div>
+	</body>
+</html>

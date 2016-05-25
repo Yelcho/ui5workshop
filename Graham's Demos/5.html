@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="/ui5/openui5-sdk-1.36.10/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-theme="sap_bluecrystal" data-sap-ui-xx-bindingSyntax="complex" data-sap-ui-libs="sap.m"></script>
+    <meta charset="utf-8">
+    <title>OpenUI5 Simple Demo</title>
+
+    <script id="myView" type="sapui5/xmlview">
+        <mvc:View controllerName="local.myController" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+            <App>
+                <Page title="openUI5 Simple Test">
+                    <IconTabBar>
+                    <items>
+                        <IconTabFilter text="Employees" icon="sap-icon://group">
+                            <List items="{/Employees}">
+                                <items>
+                                    <StandardListItem title="{FirstName} {LastName}" description="{Title}" info="{HomePhone}" type="Active" press="onItemPress" />
+                                </items>
+                            </List>
+                        </IconTabFilter>
+                        </items>
+                    </IconTabBar>
+                </Page>
+            </App>
+        </mvc:View>
+    </script>
+
+    <script>
+    // Define the model
+    var myModel = new sap.ui.model.odata.v2.ODataModel("/V2/Northwind/Northwind.svc/");
+
+    // Define the controller
+    sap.ui.controller("local.myController", {
+        onItemPress: function(oEvent) {
+            sap.m.MessageToast.show('Pressed ' + oEvent.getSource().getBindingContext().getObject().FirstName);
+        }
+    });
+
+    // Instantiate the view
+    sap.ui.xmlview({
+            viewContent: jQuery('#myView').html()
+        })
+        .setModel(myModel) // Bind to the model
+        .placeAt('content');
+    </script>
+</head>
+<body id="content" class="sapUiBody" />
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <title>MVC & Data Binding Example</title>
+
+    <!-- SAPUI5 Bootstrap -->
+    <script id="sap-ui-bootstrap" type="text/javascript" src="/ui5/openui5-sdk-1.36.10/resources/sap-ui-core.js" data-sap-ui-theme="sap_bluecrystal" data-sap-ui-libs="sap.m">
+    </script>
+
+    <!-- XML-based view definition -->
+    <script id="view1" type="sapui5/xmlview">
+        <mvc:View controllerName="local.controller" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+            <App>
+                <Page title="{/textvalue}">
+                    <VBox alignItems="Center">
+                        <Label text="The input field below and the page title are bound to the same model property" />
+                        <Input id="oInputField" type="Text" valueLiveUpdate="true" width="300px" value="{/textvalue}" />
+                        <Button text="Reset Input Field" press="handleResetButtonPress" />
+                        <Button text="Change Model" press="handleChangeModelButtonPress" />
+                        <Image src="mvc.png" width="100%" />
+                    </VBox>
+                </Page>
+            </App>
+        </mvc:View>
+    </script>
+
+    <script>
+    // Model definition
+    jQuery.sap.require("sap.ui.model.json.JSONModel");
+    sap.ui.getCore().setModel(
+        new sap.ui.model.json.JSONModel({
+            textvalue: 'Two-way Data-binding Example'
+        })
+    );
+
+    // Controller definition
+    sap.ui.controller("local.controller", {
+        handleResetButtonPress: function(oEvent) {
+            this.getView().byId('oInputField').setValue('Input value reset');
+        },
+        handleChangeModelButtonPress: function(oEvent) {
+            this.getView().getModel().setProperty('/textvalue', 'Model changed');
+        }
+    });
+
+    // Instantiate the View and display
+    var oView = sap.ui.xmlview({
+        viewContent: jQuery('#view1').html()
+    });
+
+    oView.placeAt('content');
+    </script>
+</head>
+
+<body class="sapUiBody" role="application">
+    <div id="content"></div>
+</body>
+
+</html>

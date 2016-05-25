@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/ui5/openui5-sdk-1.36.10/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-theme="sap_bluecrystal" data-sap-ui-xx-bindingSyntax="complex" data-sap-ui-libs="sap.m"></script>
+    <meta charset="utf-8">
+    <title>OpenUI5 Simple Demo</title>
+    <script type="text/javascript">
+    new sap.m.App({
+            pages: new sap.m.Page({
+                title: 'OpenUI5 Simple Demo',
+                content: new sap.m.IconTabBar({
+                    items: [
+                        new sap.m.IconTabFilter({
+                            text: 'Employees',
+                            icon: 'sap-icon://group',
+                            content: new sap.m.List({
+                                items: [
+                                    new sap.m.StandardListItem({
+                                        title: 'Graham Robinson',
+                                        description: 'Yelcho',
+                                        info: 'graham@yelcho.com.au'
+                                    }),
+                                    new sap.m.StandardListItem({
+                                        title: 'Chris Rae',
+                                        description: 'Del Rae',
+                                        info: 'chris@delrae.com.au'
+                                    }),
+                                    new sap.m.StandardListItem({
+                                        title: 'Leigh Mason',
+                                        description: 'SAP',
+                                        info: 'leigh@sap.com.au'
+                                    })
+                                ] 
+                            })
+                        })
+                    ]
+                })
+            })
+        })
+        .placeAt('content');
+    </script>
+</head>
+
+<body id="content" class="sapUiBody">
+</body>
+
+</html>

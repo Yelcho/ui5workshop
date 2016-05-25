@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="description" content="OpenUI5 Extension Demo" />
+    <script src="/ui5/openui5-sdk-1.36.10/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-theme="sap_bluecrystal" data-sap-ui-xx-bindingSyntax="complex" data-sap-ui-libs="sap.m"></script>
+    <meta charset="utf-8">
+    <title>OpenUI5 Extension Demo</title>
+</head>
+<style type="text/css">
+.iconcounter-icon {
+    background-color: #007cc0;
+    color: white;
+    padding: 15px;
+    margin: 5px;
+    border-radius: 25%;
+    width: 25px;
+    border: 1px solid #005cc0;
+}
+
+.iconcounter-num {
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    width: 25px;
+    height: 25px;
+    top: -11px;
+    left: 45px;
+    border-radius: 100%;
+    line-height: 23px;
+}
+</style>
+<script type="text/javascript">
+sap.ui.core.Icon.extend('mst15.IconCounter', {
+    metadata: {
+        properties: {
+            counter: {
+                type: "int",
+                defaultValue: 0
+            },
+            counterColour: {
+                type: "string",
+                defaultValue: 'red'
+            }
+        }
+    },
+
+    init: function() {
+        this.addStyleClass('iconcounter-icon');
+    },
+
+    renderer: function(oRm, oControl) {
+        oControl.setSize('25px');
+        sap.ui.core.IconRenderer.render.apply(this, arguments);
+    },
+
+    onAfterRendering: function() {
+        var value = this.getCounter();
+        if (value !== 0) {
+            var counter =
+                $('<div class="iconcounter-num"></div>')
+                .html(value)
+                .css('background-color', this.getCounterColour())
+                .css('border', '1px solid ' + this.getCounterColour());
+            this.$().append(counter);
+        }
+    }
+});
+
+
+new sap.m.VBox({
+    alignItems: 'Center',
+    items: [
+        new sap.m.Text({
+            text: ''
+        }),
+        new mst15.IconCounter({
+            src: 'sap-icon://email',
+            counter: 23,
+            counterColour: 'green'
+        }),
+        new sap.m.Text({
+            text: ''
+        }),
+        new mst15.IconCounter({
+            src: 'sap-icon://task',
+            counter: 100,
+            counterColour: 'orange'
+        }),
+        new sap.m.Text({
+            text: ''
+        }),
+        new mst15.IconCounter({
+            src: 'sap-icon://inbox',
+            counter: 10
+        }),
+        new sap.m.Text({
+            text: ''
+        }),
+        new mst15.IconCounter({
+            src: 'sap-icon://badge',
+            counter: 10,
+            counterColour: 'blue'
+        }),
+        new sap.m.Text({
+            text: ''
+        }),
+        new mst15.IconCounter({
+            src: 'sap-icon://employee-approvals',
+            counter: 10,
+            counterColour: 'gray'
+        })
+    ]
+}).placeAt('content');
+</script>
+
+<body id="content" class="sapUiBody">
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/ui5/openui5-sdk-1.36.10/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-theme="sap_bluecrystal" data-sap-ui-xx-bindingSyntax="complex" data-sap-ui-libs="sap.m"></script>
+    <meta charset="utf-8">
+    <title>OpenUI5 Simple Demo</title>
+    <script type="text/javascript">
+    new sap.m.App({
+            pages: new sap.m.Page({
+                title: 'OpenUI5 Simple Demo',
+                content: new sap.m.IconTabBar({
+                    items: [
+                        new sap.m.IconTabFilter({
+                            text: 'Employees',
+                            icon: 'sap-icon://group',
+                            content: new sap.m.List({
+                                items: {
+                                    path: '/Employees',
+                                    template: new sap.m.StandardListItem({
+                                        title: '{FirstName} {LastName}',
+                                        description: '{Title}',
+                                        info: '{HomePhone}'
+                                    })
+                                }
+                            })
+                        }),
+                        new sap.m.IconTabFilter({
+                            text: 'Products',
+                            icon: 'sap-icon://product',
+                            content: new sap.m.List({
+                                items: {
+                                    path: '/Products',
+                                    template: new sap.m.DisplayListItem({
+                                        label: '{ProductName}',
+                                        value: '{UnitsInStock}'
+                                    })
+                                }
+                            })
+                        })
+                    ]
+                })
+            })
+        })
+        .setModel(new sap.ui.model.odata.v2.ODataModel("/V2/Northwind/Northwind.svc/"))
+        .placeAt('content');
+    </script>
+</head>
+
+<body id="content" class="sapUiBody">
+</body>
+
+</html>
